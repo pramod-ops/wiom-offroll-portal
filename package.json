@@ -1,0 +1,11 @@
+{
+  "name": "wiom-offroll-portal",
+  "version": "1.0.0",
+  "description": "Wiom Offroll Employee Self-Service Portal",
+  "scripts": {
+    "start": "serve . -l $PORT --no-clipboard"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  }
+}
