@@ -724,9 +724,12 @@ document.getElementById('hrLoginForm').style.display='none';
 
 function sendOTP(){
   const empId=document.getElementById('loginEmpId').value.trim().toUpperCase();
+  const mobile=document.getElementById('loginMobile').value.trim();
   if(!empId){showToast('Please enter your Employee ID','e');return;}
+  if(!mobile||mobile.length!==10){showToast('Please enter a valid 10-digit mobile number','e');return;}
   const emp=EMPLOYEES.find(e=>e.id===empId);
   if(!emp){showToast('Employee ID not found','e');return;}
+  if(emp.mobile!==mobile){showToast('Mobile number does not match our records','e');return;}
   S.generatedOTP=String(Math.floor(100000+Math.random()*900000));
   document.getElementById('demoBanner').style.display='block';
   document.getElementById('otpDisplay').textContent=S.generatedOTP;
