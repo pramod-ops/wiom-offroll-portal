@@ -1681,11 +1681,21 @@ function reUploadDoc(i,input){
 function viewDoc(i){
   const doc=getDocs()[i];
   if(!doc||!doc.dataUrl){showToast('File data not available','e');return;}
-  const a=document.createElement('a');
-  a.href=doc.dataUrl;
-  a.target='_blank';
-  if(S.user&&S.user.role==='hr') a.download=doc.name;
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  const isHR=S.user&&S.user.role==='hr';
+  if(isHR){
+    const a=document.createElement('a');
+    a.href=doc.dataUrl;a.download=doc.name;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  } else {
+    const arr=doc.dataUrl.split(',');
+    const mime=arr[0].match(/:(.*?);/)[1];
+    const bstr=atob(arr[1]);
+    let n=bstr.length;const u8=new Uint8Array(n);
+    while(n--)u8[n]=bstr.charCodeAt(n);
+    const blob=new Blob([u8],{type:mime});
+    const url=URL.createObjectURL(blob);
+    window.open(url,'_blank');
+  }
 }
 
 function addTextDoc(){
