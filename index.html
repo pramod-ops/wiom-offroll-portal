@@ -1479,7 +1479,7 @@ ${customDocs.length?customDocs.map((d,i)=>`
   <div class="doc-body">
     <div class="doc-meta">Uploaded by HR · ${fmtDate(d.date)}${d.size?' · '+d.size+' KB':''}</div>
     ${d.dataUrl
-      ?`<button class="btn btn-primary btn-sm" style="margin-bottom:8px" onclick="viewDoc(${i})">📄 Open / Download</button>`
+      ?`<button class="btn btn-primary btn-sm" style="margin-bottom:8px" onclick="viewDoc(${i})">${isHR?'📄 Open / Download':'📄 View'}</button>`
       :`<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:10px;margin-bottom:8px">
           <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:3px">⚠️ File not viewable</div>
           <div style="font-size:12px;color:#78350f">${isHR?'This file was uploaded before the viewer was enabled. Please remove and re-upload it.':'This document was uploaded before the viewer was enabled. Please ask HR to re-upload it.'}</div>
@@ -1684,7 +1684,7 @@ function viewDoc(i){
   const a=document.createElement('a');
   a.href=doc.dataUrl;
   a.target='_blank';
-  a.download=doc.name;
+  if(S.user&&S.user.role==='hr') a.download=doc.name;
   document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 
