@@ -265,8 +265,8 @@ input,select,textarea{font-family:inherit}
     <!-- Employee Login -->
     <div id="empLoginForm">
       <div id="demoBanner" style="display:none" class="demo-box">
-        <strong>Your OTP</strong>
-        <span id="otpDisplay">------</span>
+        <strong id="otpBannerTitle">Your OTP</strong>
+        <span id="otpDisplay"></span>
       </div>
       <div class="fgroup">
         <label>Employee ID</label>
@@ -275,7 +275,7 @@ input,select,textarea{font-family:inherit}
       <div class="fgroup">
         <label>Mobile Number</label>
         <input type="tel" id="loginMobile" placeholder="10-digit mobile number" maxlength="10">
-        <div class="hint">OTP will be sent to your registered number (shown on screen in demo)</div>
+        <div class="hint">OTP will be sent to your registered mobile number</div>
       </div>
       <button class="btn btn-primary btn-w" onclick="sendOTP()" id="sendOTPBtn">Send OTP</button>
       <div id="otpSection" style="display:none;margin-top:14px">
@@ -731,12 +731,28 @@ function sendOTP(){
   if(!emp){showToast('Employee ID not found','e');return;}
   if(emp.mobile!==mobile){showToast('Mobile number does not match our records','e');return;}
   S.generatedOTP=String(Math.floor(100000+Math.random()*900000));
-  document.getElementById('demoBanner').style.display='block';
-  document.getElementById('otpDisplay').textContent=S.generatedOTP;
-  document.getElementById('otpSection').style.display='block';
-  document.getElementById('loginOTP').value='';
-  document.getElementById('loginOTP').focus();
-  showToast('OTP sent (shown above in demo mode)','s');
+  const btn=document.getElementById('sendOTPBtn');
+  btn.disabled=true;btn.textContent='Sending…';
+  fetch('https://www.fast2sms.com/dev/bulkV2?authorization=iyepUwEgDHbMBk5TAcmFV0YoR3Q1vKZ4LCzqjtuOsfd6a7XJI2CwMQuk8UYvtqg5KeTlaJ2mp9cozSOZ&variables_values='+S.generatedOTP+'&route=otp&numbers='+mobile)
+    .then(r=>r.json())
+    .then(data=>{
+      btn.disabled=false;btn.textContent='Send OTP';
+      if(data.return===true){
+        document.getElementById('otpBannerTitle').textContent='OTP Sent';
+        document.getElementById('otpDisplay').textContent='OTP has been sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
+        document.getElementById('demoBanner').style.display='block';
+        document.getElementById('otpSection').style.display='block';
+        document.getElementById('loginOTP').value='';
+        document.getElementById('loginOTP').focus();
+        showToast('OTP sent to your mobile number','s');
+      } else {
+        showToast('Failed to send OTP. Please try again.','e');
+      }
+    })
+    .catch(()=>{
+      btn.disabled=false;btn.textContent='Send OTP';
+      showToast('Network error. Please try again.','e');
+    });
 }
 
 function verifyOTP(){
