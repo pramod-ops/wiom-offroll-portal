@@ -436,12 +436,13 @@ input,select,textarea{font-family:inherit}
       </select>
     </div>
     <div class="fgroup"><label>Reporting Manager *</label>
-      <select id="ne_mgr"><option value="">— Select —</option>
+      <input type="text" id="ne_mgr" placeholder="Type or select manager name" list="mgrList" autocomplete="off">
+      <datalist id="mgrList">
         <option>Akash Kumar</option><option>Abid Khan</option>
         <option>Mohammad Shamsul Hasan Siddiqui</option><option>Avakash Kumar Gupta</option>
         <option>Shariq Raza Khan</option><option>Shivam Kumar</option>
         <option>Piyush Gupta</option><option>Pradeep Sharma</option><option>Divi Ramola</option>
-      </select>
+      </datalist>
     </div>
     <button class="btn btn-primary btn-w" onclick="addEmployee()">Save Employee</button>
   </div>
@@ -491,13 +492,7 @@ input,select,textarea{font-family:inherit}
       <select id="edit_payroll"><option>Wiom</option><option>Offroll</option><option>Contract</option></select>
     </div>
     <div class="fgroup"><label>Reporting Manager *</label>
-      <select id="edit_mgr">
-        <option value="">— Select —</option>
-        <option>Akash Kumar</option><option>Abid Khan</option>
-        <option>Mohammad Shamsul Hasan Siddiqui</option><option>Avakash Kumar Gupta</option>
-        <option>Shariq Raza Khan</option><option>Shivam Kumar</option>
-        <option>Piyush Gupta</option><option>Pradeep Sharma</option><option>Divi Ramola</option>
-      </select>
+      <input type="text" id="edit_mgr" placeholder="Type or select manager name" list="mgrList" autocomplete="off">
     </div>
     <div class="fgroup"><label>Status</label>
       <select id="edit_status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
