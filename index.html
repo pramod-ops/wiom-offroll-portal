@@ -1838,7 +1838,11 @@ function renderHR(){
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
   <p class="sec-title" style="margin-bottom:0">Employee Directory</p>
-  <button class="btn btn-primary btn-sm" onclick="document.getElementById('addEmpModal').classList.add('show')">+ Add Employee</button>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-secondary btn-sm" onclick="downloadEmpTemplate()">⬇ Template</button>
+    <label class="btn btn-secondary btn-sm" style="cursor:pointer;margin:0">📤 Bulk Upload<input type="file" accept=".csv" style="display:none" onchange="bulkUploadEmployees(this)"></label>
+    <button class="btn btn-primary btn-sm" onclick="document.getElementById('addEmpModal').classList.add('show')">+ Add Employee</button>
+  </div>
 </div>
 <div class="filter-row">
   ${['All',...depts].map(d=>`<div class="fchip${filter===d?' on':''}" onclick="S.hrFilter='${d}';renderHR()">${d}</div>`).join('')}
@@ -2065,6 +2069,46 @@ function saveEditEmp(){
   closeModal('editEmpModal');
   showToast('Employee profile updated successfully!','s');
   renderHR();
+}
+
+function downloadEmpTemplate(){
+  const header='Employee ID,Full Name,Mobile,Email,Date of Joining (YYYY-MM-DD),Designation,Department,Location,Payroll,Reporting Manager,Role (employee/manager/hr)';
+  const sample='ORA0099,John Doe,9876543210,john@wiom.in,2025-01-15,Associate,Customer Experience,Gurugram,Betterplace,Akash Kumar,employee';
+  const csv=header+'\n'+sample;
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Employee_Upload_Template.csv';a.click();
+  showToast('Template downloaded!','s');
+}
+
+function bulkUploadEmployees(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const lines=e.target.result.split('\n').map(l=>l.trim()).filter(l=>l);
+    if(lines.length<2){showToast('CSV is empty or has no data rows','e');input.value='';return;}
+    const custom=getCustomEmps();
+    let added=0,updated=0,skipped=0,errors=[];
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(',').map(c=>c.trim());
+      if(cols.length<6){skipped++;continue;}
+      const [id,name,mobile,email,doj,designation,dept,loc,payroll,mgr,role]=cols;
+      if(!id||!name||!mobile){errors.push('Row '+(i+1)+': ID, Name and Mobile are required');skipped++;continue;}
+      if(mobile.length!==10||isNaN(mobile)){errors.push('Row '+(i+1)+': Invalid mobile – '+mobile);skipped++;continue;}
+      const emp={id:id.toUpperCase(),name,mobile,email:email||'',doj:doj||'',designation:designation||'Associate',dept:dept||'Customer Experience',loc:loc||'Gurugram',payroll:payroll||'Betterplace',mgr:mgr||'',status:'Active',role:['manager','hr'].includes((role||'').toLowerCase())?(role||'').toLowerCase():'employee'};
+      const gi=EMPLOYEES.findIndex(x=>x.id===emp.id);
+      if(gi>=0){EMPLOYEES[gi]=emp;updated++;}else{EMPLOYEES.push(emp);added++;}
+      const ci=custom.findIndex(x=>x.id===emp.id);
+      if(ci>=0)custom[ci]=emp;else custom.push(emp);
+    }
+    saveCustomEmps(custom);
+    input.value='';
+    renderHR();
+    let msg=`Bulk upload done: ${added} added, ${updated} updated, ${skipped} skipped.`;
+    if(errors.length)msg+='\nErrors:\n'+errors.slice(0,5).join('\n');
+    showToast(msg.split('\n')[0],'s');
+    if(errors.length)setTimeout(()=>showToast('Errors: '+errors.slice(0,3).join(' | '),'e'),1500);
+  };
+  reader.readAsText(file);
 }
 
 function addEmployee(){
