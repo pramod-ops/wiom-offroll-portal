@@ -257,71 +257,26 @@ input,select,textarea{font-family:inherit}
   <div class="login-body">
     <h2>Welcome Back</h2>
     <p class="sub">Login to access your portal</p>
-    <div class="login-toggle">
-      <button class="ltoggle on" onclick="setLoginMode('emp')" id="ltEmp">Employee</button>
-      <button class="ltoggle" onclick="setLoginMode('mgr')" id="ltMgr">Manager</button>
-      <button class="ltoggle" onclick="setLoginMode('hr')" id="ltHR">HR Admin</button>
+    <div id="demoBanner" style="display:none" class="demo-box">
+      <strong id="otpBannerTitle">Your OTP</strong>
+      <span id="otpDisplay"></span>
     </div>
-    <!-- Employee Login -->
-    <div id="empLoginForm">
-      <div id="demoBanner" style="display:none" class="demo-box">
-        <strong id="otpBannerTitle">Your OTP</strong>
-        <span id="otpDisplay"></span>
-      </div>
-      <div class="fgroup">
-        <label>Employee ID</label>
-        <input type="text" id="loginEmpId" placeholder="e.g. ORA0023 or 202018314" oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="fgroup">
-        <label>Mobile Number</label>
-        <input type="tel" id="loginMobile" placeholder="10-digit mobile number" maxlength="10">
-        <div class="hint">OTP will be sent to your registered mobile number</div>
-      </div>
-      <button class="btn btn-primary btn-w" onclick="sendOTP()" id="sendOTPBtn">Send OTP</button>
-      <div id="otpSection" style="display:none;margin-top:14px">
-        <div class="fgroup">
-          <label>Enter OTP</label>
-          <input type="tel" id="loginOTP" placeholder="6-digit OTP" maxlength="6">
-        </div>
-        <button class="btn btn-success btn-w" onclick="verifyOTP()">Login →</button>
-      </div>
+    <div class="fgroup">
+      <label>Employee ID</label>
+      <input type="text" id="loginEmpId" placeholder="e.g. ORA0023 or 202018314" oninput="this.value=this.value.toUpperCase()">
     </div>
-    <!-- Manager Login -->
-    <div id="mgrLoginForm" style="display:none">
-      <div class="demo-box"><strong>Demo Mode</strong>Manager PIN: <strong>1234</strong></div>
-      <div class="fgroup">
-        <label>Select Your Name</label>
-        <select id="mgrSelect">
-          <option value="">— Select Manager —</option>
-          <option>Akash Kumar</option>
-          <option>Abid Khan</option>
-          <option>Mohammad Shamsul Hasan Siddiqui</option>
-          <option>Avakash Kumar Gupta</option>
-          <option>Shariq Raza Khan</option>
-          <option>Shivam Kumar</option>
-          <option>Piyush Gupta</option>
-          <option>Pradeep Sharma</option>
-          <option>Divi Ramola</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label>PIN</label>
-        <input type="password" id="mgrPIN" placeholder="Enter PIN" maxlength="6">
-      </div>
-      <button class="btn btn-primary btn-w" onclick="mgrLogin()">Login as Manager →</button>
+    <div class="fgroup">
+      <label>Mobile Number</label>
+      <input type="tel" id="loginMobile" placeholder="10-digit mobile number" maxlength="10">
+      <div class="hint">OTP will be sent to your registered mobile number</div>
     </div>
-    <!-- HR Login -->
-    <div id="hrLoginForm" style="display:none">
-      <div class="demo-box"><strong>Admin Credentials</strong>Email: pramod@wiom.in<br>Mobile: 9716209931</div>
+    <button class="btn btn-primary btn-w" onclick="sendOTP()" id="sendOTPBtn">Send OTP</button>
+    <div id="otpSection" style="display:none;margin-top:14px">
       <div class="fgroup">
-        <label>Admin Email</label>
-        <input type="email" id="hrEmail" placeholder="Enter admin email">
+        <label>Enter OTP</label>
+        <input type="tel" id="loginOTP" placeholder="6-digit OTP" maxlength="6">
       </div>
-      <div class="fgroup">
-        <label>Registered Mobile</label>
-        <input type="tel" id="hrMobile" placeholder="10-digit mobile number" maxlength="10">
-      </div>
-      <button class="btn btn-primary btn-w" onclick="hrLogin()">Login as HR Admin →</button>
+      <button class="btn btn-success btn-w" onclick="verifyOTP()">Login →</button>
     </div>
   </div>
 </div>
@@ -444,6 +399,9 @@ input,select,textarea{font-family:inherit}
         <option>Piyush Gupta</option><option>Pradeep Sharma</option><option>Divi Ramola</option>
       </datalist>
     </div>
+    <div class="fgroup"><label>Role</label>
+      <select id="ne_role"><option value="employee">Employee</option><option value="manager">Manager</option><option value="hr">HR Admin</option></select>
+    </div>
     <button class="btn btn-primary btn-w" onclick="addEmployee()">Save Employee</button>
   </div>
 </div>
@@ -497,6 +455,9 @@ input,select,textarea{font-family:inherit}
     <div class="fgroup"><label>Status</label>
       <select id="edit_status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
     </div>
+    <div class="fgroup"><label>Role</label>
+      <select id="edit_role"><option value="employee">Employee</option><option value="manager">Manager</option><option value="hr">HR Admin</option></select>
+    </div>
     <button class="btn btn-primary btn-w" onclick="saveEditEmp()">Save Changes</button>
   </div>
 </div>
@@ -531,6 +492,7 @@ input,select,textarea{font-family:inherit}
 <script>
 // ==================== EMPLOYEE DATA ====================
 let EMPLOYEES = [
+  {id:'HRADMIN',name:'Pramod',mobile:'9716209931',email:'pramod@wiom.in',doj:'2023-01-01',designation:'HR Admin',dept:'HR',loc:'Gurugram',mgr:'',payroll:'Wiom',role:'hr'},
   {id:'ORA0023',name:'Udit Kumar',mobile:'9716209931',email:'',doj:'2025-07-24',designation:'Associate',dept:'Supply',loc:'New Delhi',mgr:'Akash Kumar',payroll:'Betterplace'},
   {id:'ORA0024',name:'Rahul Kumar Chhatri',mobile:'9716209931',email:'',doj:'2025-07-24',designation:'Associate',dept:'Supply',loc:'New Delhi',mgr:'Akash Kumar',payroll:'Betterplace'},
   {id:'ORA0016',name:'Rahul Kashyap',mobile:'9716209931',email:'',doj:'2025-01-25',designation:'Associate',dept:'Supply',loc:'New Delhi',mgr:'Akash Kumar',payroll:'Betterplace'},
@@ -705,17 +667,6 @@ function countPresent(empId,y,m){
 }
 
 // ==================== LOGIN ====================
-let loginMode='emp';
-function setLoginMode(mode){
-  loginMode=mode;
-  const idMap={emp:'ltEmp',mgr:'ltMgr',hr:'ltHR'};
-  ['emp','mgr','hr'].forEach(m=>{
-    document.getElementById(idMap[m]).classList.toggle('on',m===mode);
-    document.getElementById(m+'LoginForm').style.display=m===mode?'block':'none';
-  });
-}
-document.getElementById('mgrLoginForm').style.display='none';
-document.getElementById('hrLoginForm').style.display='none';
 
 function sendOTP(){
   const empId=document.getElementById('loginEmpId').value.trim().toUpperCase();
@@ -771,23 +722,10 @@ function verifyOTP(){
   if(otp!==S.generatedOTP){showToast('Incorrect OTP. Please try again.','e');return;}
   const emp=EMPLOYEES.find(e=>e.id===empId);
   if(!emp){showToast('Employee not found','e');return;}
-  loginSuccess({emp,role:'employee'});
-}
-
-function mgrLogin(){
-  const name=document.getElementById('mgrSelect').value;
-  const pin=document.getElementById('mgrPIN').value;
-  if(!name){showToast('Please select your name','e');return;}
-  if(pin!=='1234'){showToast('Incorrect PIN','e');return;}
-  loginSuccess({emp:null,role:'manager',mgrName:name});
-}
-
-function hrLogin(){
-  const email=document.getElementById('hrEmail').value.trim().toLowerCase();
-  const mobile=document.getElementById('hrMobile').value.trim();
-  if(email!=='pramod@wiom.in'){showToast('Incorrect admin email','e');return;}
-  if(mobile!=='9716209931'){showToast('Incorrect mobile number','e');return;}
-  loginSuccess({emp:null,role:'hr',mgrName:'Pramod (HR Admin)'});
+  const role=emp.role||'employee';
+  if(role==='hr') loginSuccess({emp,role:'hr',mgrName:emp.name});
+  else if(role==='manager') loginSuccess({emp,role:'manager',mgrName:emp.name});
+  else loginSuccess({emp,role:'employee'});
 }
 
 function loginSuccess(user){
@@ -814,7 +752,6 @@ function logout(){
   document.getElementById('loginOTP').value='';
   document.getElementById('demoBanner').style.display='none';
   document.getElementById('otpSection').style.display='none';
-  setLoginMode('emp');
 }
 
 // ==================== NAVIGATION ====================
@@ -2096,6 +2033,7 @@ function openEditEmpModal(empId){
   document.getElementById('edit_payroll').value=e.payroll||'Wiom';
   document.getElementById('edit_mgr').value=e.mgr||'';
   document.getElementById('edit_status').value=e.status||'Active';
+  document.getElementById('edit_role').value=e.role||'employee';
   document.getElementById('editEmpModal').classList.add('show');
 }
 
@@ -2111,11 +2049,12 @@ function saveEditEmp(){
   const payroll=document.getElementById('edit_payroll').value;
   const mgr=document.getElementById('edit_mgr').value;
   const status=document.getElementById('edit_status').value;
+  const role=document.getElementById('edit_role').value||'employee';
   if(!name||!mobile||!doj||!designation||!dept||!loc||!payroll||!mgr){
     showToast('Please fill all required fields (*)','e');return;
   }
   if(mobile.length!==10||isNaN(mobile)){showToast('Enter valid 10-digit mobile number','e');return;}
-  const updated={id,name,mobile,email,doj,designation,dept,loc,payroll,mgr,status};
+  const updated={id,name,mobile,email,doj,designation,dept,loc,payroll,mgr,status,role};
   const idx=EMPLOYEES.findIndex(e=>e.id===id);
   if(idx>=0)EMPLOYEES[idx]=updated;
   const custom=getCustomEmps();
@@ -2144,7 +2083,8 @@ function addEmployee(){
   }
   if(EMPLOYEES.find(e=>e.id===id)){showToast('Employee ID already exists','e');return;}
   if(mobile.length!==10||isNaN(mobile)){showToast('Enter valid 10-digit mobile number','e');return;}
-  const emp={id,name,mobile,email,doj,designation,dept,loc,payroll,mgr,status:'Active'};
+  const role=document.getElementById('ne_role').value||'employee';
+  const emp={id,name,mobile,email,doj,designation,dept,loc,payroll,mgr,status:'Active',role};
   EMPLOYEES.push(emp);
   const custom=getCustomEmps();custom.push(emp);saveCustomEmps(custom);
   closeModal('addEmpModal');
