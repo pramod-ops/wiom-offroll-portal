@@ -23,20 +23,37 @@ input,select,textarea{font-family:inherit}
 }
 
 /* ===== LOGIN ===== */
-#loginPage{min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(145deg,#7b0a5e 0%,#b5127a 55%,#d4188e 100%)}
-.login-hdr{padding:44px 24px 20px;text-align:center;color:#fff}
-.login-logo{width:90px;height:90px;background:#fff;border-radius:18px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.15)}
-.login-hdr h1{font-size:26px;font-weight:800;margin-bottom:4px}
-.login-hdr p{font-size:14px;opacity:.8}
-.login-body{flex:1;background:#fff;border-radius:24px 24px 0 0;padding:28px 20px 32px;margin-top:4px}
-.login-body h2{font-size:20px;font-weight:700;margin-bottom:4px}
-.login-body .sub{font-size:13px;color:#6b7280;margin-bottom:22px}
+#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fdf0ff 0%,#f0f4ff 60%,#fff5fb 100%)}
+.login-card{background:#fff;border-radius:20px;padding:40px 36px 36px;width:100%;max-width:420px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 50px rgba(0,0,0,.08)}
+.login-brand{text-align:center;margin-bottom:28px}
+.brand-icon{width:54px;height:54px;background:linear-gradient(135deg,#7b0a5e,#d4188e);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;margin:0 auto 14px;letter-spacing:-1px;box-shadow:0 4px 14px rgba(180,18,122,.3)}
+.login-brand h1{font-size:22px;font-weight:800;color:#111827;margin-bottom:4px}
+.login-brand p{font-size:13px;color:#6b7280}
+.login-step{display:flex;align-items:center;gap:8px;margin-bottom:24px}
+.login-step-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#9ca3af}
+.login-step-item.active{color:#b5127a}
+.login-step-num{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.login-step-item.active .login-step-num{background:#b5127a;border-color:#b5127a;color:#fff}
+.login-step-item.done .login-step-num{background:#16a34a;border-color:#16a34a;color:#fff}
+.login-step-item.done{color:#16a34a}
+.login-step-line{flex:1;height:1px;background:#e5e7eb}
+.login-title{font-size:18px;font-weight:700;color:#111827;margin-bottom:4px}
+.login-sub{font-size:13px;color:#6b7280;margin-bottom:22px;line-height:1.5}
+.login-footer{text-align:center;margin-top:24px;font-size:12px;color:#9ca3af}
 .demo-box{background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;font-size:12px;color:#92400e;margin-bottom:18px;line-height:1.6}
 .demo-box strong{color:#78350f;display:block;margin-bottom:3px}
 .otp-reveal{margin-top:6px;font-size:16px;font-weight:800;color:#1d4ed8;letter-spacing:4px}
 .login-toggle{display:flex;gap:8px;margin-bottom:20px}
 .ltoggle{flex:1;padding:10px 8px;border-radius:9px;font-size:13px;font-weight:600;border:2px solid #e5e7eb;color:#6b7280;background:#fff;transition:all .2s}
 .ltoggle.on{border-color:#1d4ed8;color:#1d4ed8;background:#eff6ff}
+.login-inp-wrap{position:relative;margin-bottom:16px}
+.login-inp-wrap label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;letter-spacing:.3px}
+.login-inp-wrap input{width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;color:#111827;background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
+.login-inp-wrap input:focus{border-color:#b5127a;box-shadow:0 0 0 3px rgba(181,18,122,.1)}
+.login-inp-wrap .inp-icon{position:absolute;left:14px;bottom:13px;font-size:16px;pointer-events:none}
+.login-divider{display:flex;align-items:center;gap:10px;margin:18px 0;color:#d1d5db;font-size:12px}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
+@media(max-width:460px){.login-card{padding:28px 20px 24px}}
 .fgroup{margin-bottom:14px}
 .fgroup label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5px}
 .fgroup input,.fgroup select,.fgroup textarea{width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:15px;color:#111827;background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
@@ -250,34 +267,63 @@ input,select,textarea{font-family:inherit}
 
 <!-- ========== LOGIN PAGE ========== -->
 <div id="loginPage">
-  <div class="login-hdr">
-    <h1>Wiom Portal</h1>
-    <p>Offroll Employee Self-Service</p>
-  </div>
-  <div class="login-body">
-    <h2>Welcome Back</h2>
-    <p class="sub">Login to access your portal</p>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-icon">W</div>
+      <h1>Wiom Portal</h1>
+      <p>Offroll Employee Self-Service</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="login-step" id="loginStepBar">
+      <div class="login-step-item active" id="step1Item">
+        <div class="login-step-num">1</div>
+        <span>Credentials</span>
+      </div>
+      <div class="login-step-line"></div>
+      <div class="login-step-item" id="step2Item">
+        <div class="login-step-num">2</div>
+        <span>Verify OTP</span>
+      </div>
+    </div>
+
+    <!-- OTP banner -->
     <div id="demoBanner" style="display:none" class="demo-box">
       <strong id="otpBannerTitle">Your OTP</strong>
       <span id="otpDisplay"></span>
     </div>
-    <div class="fgroup">
-      <label>Employee ID</label>
-      <input type="text" id="loginEmpId" placeholder="e.g. ORA0023 or 202018314" oninput="this.value=this.value.toUpperCase()">
-    </div>
-    <div class="fgroup">
-      <label>Mobile Number</label>
-      <input type="tel" id="loginMobile" placeholder="10-digit mobile number" maxlength="10">
-      <div class="hint">OTP will be sent to your registered mobile number</div>
-    </div>
-    <button class="btn btn-primary btn-w" onclick="sendOTP()" id="sendOTPBtn">Send OTP</button>
-    <div id="otpSection" style="display:none;margin-top:14px">
-      <div class="fgroup">
-        <label>Enter OTP</label>
-        <input type="tel" id="loginOTP" placeholder="6-digit OTP" maxlength="6">
+
+    <!-- Step 1: Credentials -->
+    <div id="credStep">
+      <p class="login-title">Sign in</p>
+      <p class="login-sub">Enter your Employee ID and registered mobile number</p>
+      <div class="login-inp-wrap">
+        <label>EMPLOYEE ID</label>
+        <span class="inp-icon">🪪</span>
+        <input type="text" id="loginEmpId" placeholder="e.g. ORA0023 or 202018314" oninput="this.value=this.value.toUpperCase()">
       </div>
-      <button class="btn btn-success btn-w" onclick="verifyOTP()">Login →</button>
+      <div class="login-inp-wrap">
+        <label>MOBILE NUMBER</label>
+        <span class="inp-icon">📱</span>
+        <input type="tel" id="loginMobile" placeholder="10-digit mobile number" maxlength="10">
+      </div>
+      <button class="btn btn-primary btn-w" onclick="sendOTP()" id="sendOTPBtn" style="background:linear-gradient(135deg,#7b0a5e,#d4188e);border-radius:10px;padding:13px;font-size:15px;margin-top:4px">Send OTP →</button>
     </div>
+
+    <!-- Step 2: OTP -->
+    <div id="otpSection" style="display:none">
+      <p class="login-title">Enter OTP</p>
+      <p class="login-sub">A 6-digit OTP has been sent to your registered mobile number</p>
+      <div class="login-inp-wrap">
+        <label>ONE-TIME PASSWORD</label>
+        <span class="inp-icon">🔐</span>
+        <input type="tel" id="loginOTP" placeholder="6-digit OTP" maxlength="6" style="letter-spacing:6px;font-size:20px;font-weight:700;text-align:center;padding-left:14px">
+      </div>
+      <button class="btn btn-success btn-w" onclick="verifyOTP()" style="border-radius:10px;padding:13px;font-size:15px;margin-top:4px">Verify &amp; Login →</button>
+      <p style="text-align:center;margin-top:14px;font-size:13px;color:#6b7280">Wrong number? <span style="color:#b5127a;cursor:pointer;font-weight:600" onclick="resetLoginStep()">Go back</span></p>
+    </div>
+
+    <div class="login-footer">© 2025 Wiom · All rights reserved</div>
   </div>
 </div>
 
@@ -679,13 +725,19 @@ function sendOTP(){
   S.generatedOTP=String(Math.floor(100000+Math.random()*900000));
   const btn=document.getElementById('sendOTPBtn');
   btn.disabled=true;btn.textContent='Sending…';
+  function goToStep2(){
+    document.getElementById('credStep').style.display='none';
+    document.getElementById('otpSection').style.display='block';
+    document.getElementById('step1Item').className='login-step-item done';
+    document.getElementById('step2Item').className='login-step-item active';
+    document.getElementById('loginOTP').value='';
+    document.getElementById('loginOTP').focus();
+  }
   function showOTPOnScreen(){
     document.getElementById('otpBannerTitle').textContent='Your OTP';
     document.getElementById('otpDisplay').textContent=S.generatedOTP;
     document.getElementById('demoBanner').style.display='block';
-    document.getElementById('otpSection').style.display='block';
-    document.getElementById('loginOTP').value='';
-    document.getElementById('loginOTP').focus();
+    goToStep2();
   }
   fetch('https://www.fast2sms.com/dev/bulkV2?authorization=iyepUwEgDHbMBk5TAcmFV0YoR3Q1vKZ4LCzqjtuOsfd6a7XJI2CwMQuk8UYvtqg5KeTlaJ2mp9cozSOZ&variables_values='+S.generatedOTP+'&route=otp&numbers='+mobile)
     .then(r=>r.json())
@@ -694,11 +746,10 @@ function sendOTP(){
       console.log('Fast2SMS response:',JSON.stringify(data));
       if(data.return===true){
         document.getElementById('otpBannerTitle').textContent='OTP Sent';
+        document.getElementById('otpBannerTitle').textContent='OTP Sent';
         document.getElementById('otpDisplay').textContent='OTP sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
         document.getElementById('demoBanner').style.display='block';
-        document.getElementById('otpSection').style.display='block';
-        document.getElementById('loginOTP').value='';
-        document.getElementById('loginOTP').focus();
+        goToStep2();
         showToast('OTP sent to your mobile number','s');
       } else {
         const errMsg=(data.message&&data.message[0])||'SMS delivery failed';
@@ -752,6 +803,18 @@ function logout(){
   document.getElementById('loginOTP').value='';
   document.getElementById('demoBanner').style.display='none';
   document.getElementById('otpSection').style.display='none';
+  document.getElementById('credStep').style.display='block';
+  document.getElementById('step1Item').className='login-step-item active';
+  document.getElementById('step2Item').className='login-step-item';
+}
+
+function resetLoginStep(){
+  S.generatedOTP=null;
+  document.getElementById('otpSection').style.display='none';
+  document.getElementById('demoBanner').style.display='none';
+  document.getElementById('credStep').style.display='block';
+  document.getElementById('step1Item').className='login-step-item active';
+  document.getElementById('step2Item').className='login-step-item';
 }
 
 // ==================== NAVIGATION ====================
