@@ -187,17 +187,18 @@ input,select,textarea{font-family:inherit}
 .cal-nav button{padding:5px 11px;border-radius:7px;font-size:13px;font-weight:600;background:#f3f4f6;color:#374151;border:none;cursor:pointer}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .cal-hdr{text-align:center;font-size:11px;font-weight:700;color:#9ca3af;padding:5px 0}
-.cal-day{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;cursor:default}
+.cal-day{aspect-ratio:1;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:500;cursor:default}
 .cd-present{background:#dcfce7;color:#15803d}
 .cd-absent{background:#fee2e2;color:#b91c1c}
 .cd-leave{background:#fef9c3;color:#a16207}
+.cd-compoff{background:#ede9fe;color:#7c3aed}
 .cd-today{background:#1d4ed8;color:#fff;font-weight:700}
 .cd-future{background:#f9fafb;color:#d1d5db}
 .cd-empty{background:transparent}
 .cd-weekend{background:#f3f4f6;color:#9ca3af}
-.att-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.att-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280}
-.leg-dot{width:10px;height:10px;border-radius:3px}
+.leg-badge{min-width:22px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;padding:0 4px}
 
 /* ===== DOCUMENTS ===== */
 .doc-card{background:#fff;border-radius:12px;margin-bottom:10px;box-shadow:var(--sh);overflow:hidden}
@@ -1470,10 +1471,12 @@ function renderAttendance(){
     ${buildCalendar(empId,y,m)}
   </div>
   <div class="att-legend">
-    <div class="leg-item"><div class="leg-dot" style="background:#dcfce7"></div> Present</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#fee2e2"></div> Absent</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#fef9c3"></div> On Leave</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#1d4ed8;border-radius:50%"></div> Today</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#dcfce7;color:#15803d">P</div> Present</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#fee2e2;color:#b91c1c">A</div> Absent</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#fef9c3;color:#a16207">L</div> Leave</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#f3f4f6;color:#9ca3af">WO</div> Week Off</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#ede9fe;color:#7c3aed">CO</div> Comp Off</div>
+    <div class="leg-item"><div class="leg-badge" style="background:#1d4ed8;color:#fff">•</div> Today</div>
   </div>
 </div>`;
 }
@@ -1493,14 +1496,15 @@ function buildCalendar(empId,y,m){
     const isWeekend=dow===0||dow===6;
     const onLeave=approvedLeaves.some(l=>ds>=l.from&&ds<=l.to);
     const attRec=att[getAttKey(empId,ds)];
-    let cls='cal-day ';
-    if(isToday)cls+='cd-today';
-    else if(isFuture)cls+=isWeekend?'cd-weekend':'cd-future';
-    else if(onLeave)cls+='cd-leave';
-    else if(isWeekend)cls+='cd-weekend';
-    else if(attRec&&attRec.in)cls+='cd-present';
-    else cls+='cd-absent';
-    html+=`<div class="${cls}">${d}</div>`;
+    let cls='cal-day ';let lbl='';
+    if(isToday){cls+='cd-today';lbl='';}
+    else if(isFuture){cls+=isWeekend?'cd-weekend':'cd-future';lbl=isWeekend?'WO':'';}
+    else if(onLeave){cls+='cd-leave';lbl='L';}
+    else if(isWeekend){cls+='cd-weekend';lbl='WO';}
+    else if(attRec&&attRec.compoff){cls+='cd-compoff';lbl='CO';}
+    else if(attRec&&attRec.in){cls+='cd-present';lbl='P';}
+    else{cls+='cd-absent';lbl='A';}
+    html+=`<div class="${cls}"><div>${d}</div>${lbl?`<div style="font-size:8px;font-weight:800;line-height:1;margin-top:1px">${lbl}</div>`:''}</div>`;
   }
   return html;
 }
