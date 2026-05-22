@@ -176,8 +176,6 @@ input,select,textarea{font-family:inherit}
 .att-btn{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;cursor:pointer;border:none;transition:all .2s}
 .att-btn-in{background:#fff;color:#059669}
 .att-btn-in:hover{background:#f0fdf4}
-.att-btn-out{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4)}
-.att-btn-out:hover{background:rgba(255,255,255,.3)}
 .att-btn:disabled{opacity:.5;cursor:not-allowed}
 .time-chips{display:flex;gap:10px;margin-top:12px}
 .time-chip{flex:1;background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center}
@@ -1516,14 +1514,6 @@ function checkIn(){
   renderAttendance();
 }
 
-function checkOut(){
-  const emp=S.user&&S.user.emp;
-  if(!emp){showToast('Please log in as employee','e');return}
-  const now=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
-  setEmpAtt(emp.id,today(),{out:now});
-  showToast('Checked out at '+now,'s');
-  renderAttendance();
-}
 
 // ==================== DOCUMENTS ====================
 function renderDocuments(){
