@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -23,12 +23,25 @@ input,select,textarea{font-family:inherit}
 }
 
 /* ===== LOGIN ===== */
-#loginPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fdf0ff 0%,#f0f4ff 60%,#fff5fb 100%)}
-.login-card{background:#fff;border-radius:20px;padding:40px 36px 36px;width:100%;max-width:420px;box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 50px rgba(0,0,0,.08)}
-.login-brand{text-align:center;margin-bottom:28px}
-.brand-icon{width:54px;height:54px;background:linear-gradient(135deg,#7b0a5e,#d4188e);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;margin:0 auto 14px;letter-spacing:-1px;box-shadow:0 4px 14px rgba(180,18,122,.3)}
-.login-brand h1{font-size:22px;font-weight:800;color:#111827;margin-bottom:4px}
+#loginPage{min-height:100vh;display:flex;align-items:stretch}
+.login-left{flex:1;background:linear-gradient(145deg,#5a0645 0%,#930d70 45%,#d4188e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.06)}
+.login-left::after{content:'';position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.05)}
+.login-left-content{position:relative;z-index:1;text-align:center;color:#fff}
+.login-left-icon{width:72px;height:72px;background:rgba(255,255,255,.18);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;margin:0 auto 28px;letter-spacing:-1px;backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.25)}
+.login-left-content h2{font-size:30px;font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
+.login-left-content p{font-size:15px;opacity:.85;line-height:1.6;max-width:280px;margin:0 auto 40px}
+.login-left-features{display:flex;flex-direction:column;gap:14px;text-align:left}
+.login-left-feature{display:flex;align-items:center;gap:12px;font-size:14px;opacity:.9}
+.login-left-feature-icon{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.login-right{width:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 48px;background:#fff}
+.login-card{width:100%;max-width:380px}
+.login-brand{text-align:left;margin-bottom:32px}
+.brand-icon{width:44px;height:44px;background:linear-gradient(135deg,#7b0a5e,#d4188e);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;margin:0 0 16px;letter-spacing:-1px;box-shadow:0 4px 14px rgba(180,18,122,.3)}
+.login-brand h1{font-size:24px;font-weight:800;color:#111827;margin-bottom:4px}
 .login-brand p{font-size:13px;color:#6b7280}
+@media(max-width:860px){.login-left{display:none}.login-right{width:100%;padding:40px 28px}}
+@media(max-width:400px){.login-right{padding:32px 20px}}
 .login-step{display:flex;align-items:center;gap:8px;margin-bottom:24px}
 .login-step-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#9ca3af}
 .login-step-item.active{color:#b5127a}
@@ -81,6 +94,12 @@ input,select,textarea{font-family:inherit}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{background:#fff;border-radius:20px 20px 0 0;padding:22px 20px 28px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+#docViewerModal{align-items:center;justify-content:center;z-index:300}
+#docViewerModal .doc-viewer-box{background:#fff;border-radius:16px;width:95vw;max-width:860px;height:90vh;display:flex;flex-direction:column;overflow:hidden}
+#docViewerModal .dv-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #e5e7eb;flex-shrink:0}
+#docViewerModal .dv-hdr h3{font-size:15px;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%}
+#docViewerModal .dv-hdr-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+#docViewerModal iframe{flex:1;width:100%;border:none;background:#f3f4f6}
 .modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .modal-hdr h3{font-size:17px;font-weight:700}
 .modal-close{font-size:22px;color:#9ca3af;line-height:1;padding:2px 6px}
@@ -267,11 +286,35 @@ input,select,textarea{font-family:inherit}
 
 <!-- ========== LOGIN PAGE ========== -->
 <div id="loginPage">
+  <!-- Left branding panel -->
+  <div class="login-left">
+    <div class="login-left-content">
+      <div class="login-left-icon">W</div>
+      <h2>Wiom Portal</h2>
+      <p>Your complete self-service platform for attendance, leaves, documents and more.</p>
+      <div class="login-left-features">
+        <div class="login-left-feature">
+          <div class="login-left-feature-icon">📋</div>
+          <span>Apply & track leaves instantly</span>
+        </div>
+        <div class="login-left-feature">
+          <div class="login-left-feature-icon">📄</div>
+          <span>Access your documents securely</span>
+        </div>
+        <div class="login-left-feature">
+          <div class="login-left-feature-icon">✅</div>
+          <span>Manager approvals in one place</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Right form panel -->
+  <div class="login-right">
   <div class="login-card">
     <div class="login-brand">
       <div class="brand-icon">W</div>
-      <h1>Wiom Portal</h1>
-      <p>Offroll Employee Self-Service</p>
+      <h1>Welcome back</h1>
+      <p>Sign in to your Wiom account</p>
     </div>
 
     <!-- Step indicator -->
@@ -324,6 +367,7 @@ input,select,textarea{font-family:inherit}
     </div>
 
     <div class="login-footer">© 2025 Wiom · All rights reserved</div>
+  </div>
   </div>
 </div>
 
@@ -452,6 +496,20 @@ input,select,textarea{font-family:inherit}
   </div>
 </div>
 
+<!-- DOCUMENT VIEWER MODAL -->
+<div class="modal-bg" id="docViewerModal">
+  <div class="doc-viewer-box">
+    <div class="dv-hdr">
+      <h3 id="docViewerTitle">Document</h3>
+      <div class="dv-hdr-actions">
+        <button id="docViewerDownloadBtn" class="btn btn-secondary btn-sm" style="display:none" onclick="downloadDocViewer()">⬇ Download</button>
+        <button class="btn btn-secondary btn-sm" onclick="closeDocViewer()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="docViewerFrame" src="about:blank"></iframe>
+  </div>
+</div>
+
 <!-- RESIGNATION MODAL -->
 <div class="modal-bg" id="resignModal">
   <div class="modal">
@@ -569,27 +627,37 @@ let EMPLOYEES = [
 ];
 
 const POLICIES = {
-  leave:`<div class="doc-meta">Last Updated: Jan 2026 | Applicable: All Offroll Employees</div>
-<h4>Leave Allocation</h4>
+  leave:`<div class="doc-meta">Effective: 1 May 2026 | Applicable: All Off-Roll Employees</div>
+<h4>Purpose</h4>
+<p style="font-size:13px;color:#374151;margin-bottom:10px">This policy outlines the leave entitlement and leave management process applicable to all off-roll employees across the organization.</p>
+<h4>Applicability</h4>
+<p style="font-size:13px;color:#374151;margin-bottom:10px">Applicable to all off-roll employees engaged with the organization across all departments and locations.</p>
+<h4>Leave Entitlement</h4>
 <ul>
-<li>Employees are entitled to <strong>6 leaves per quarter</strong>: 4 Casual Leave (CL) + 2 Sick Leave (SL).</li>
-<li>Leave year is divided into four quarters: Jan–Mar, Apr–Jun, Jul–Sep, Oct–Dec.</li>
-<li>Leaves are credited at the beginning of each quarter.</li>
-<li>Unused leaves at quarter end are <strong>lapsed and not carried forward</strong>.</li>
+<li>Total <strong>12 paid leaves</strong> in a calendar year.</li>
+<li>Leaves credited on a quarterly basis — <strong>3 leaves per quarter</strong>.</li>
 </ul>
-<h4>Leave Application</h4>
+<h4>Quarter-wise Leave Credit</h4>
 <ul>
-<li>Leave must be applied at least <strong>1 working day in advance</strong> (except Sick Leave).</li>
-<li>Maximum 3 consecutive days without prior written approval from Manager & HR.</li>
-<li>Leave application requires Manager approval. Approved leaves trigger email confirmation to employee and HR.</li>
+<li>Jan – Mar: 3 Leaves</li>
+<li>Apr – Jun: 3 Leaves</li>
+<li>Jul – Sep: 3 Leaves</li>
+<li>Oct – Dec: 3 Leaves</li>
 </ul>
-<h4>Sick Leave</h4>
+<h4>Leave Validity &amp; Lapse</h4>
 <ul>
-<li>Sick Leave may be applied on the day itself with a message to the reporting manager.</li>
-<li>For SL exceeding 2 consecutive days, a medical certificate is required upon return.</li>
+<li>Leave must be utilized <strong>within the same quarter</strong>.</li>
+<li>Unused leave balance will automatically <strong>lapse</strong> at the end of each quarter.</li>
+<li>Leave <strong>cannot</strong> be carried forward, accumulated, or encashed.</li>
+<li>A fresh balance of 3 leaves will be credited at the beginning of every quarter.</li>
 </ul>
-<h4>Leave Without Pay (LWP)</h4>
-<ul><li>Once quarterly leave balance is exhausted, additional leaves will be marked as LWP.</li></ul>`,
+<h4>Leave Approval Process</h4>
+<ul>
+<li>Employees must obtain <strong>prior approval</strong> from their reporting manager before availing leave.</li>
+<li>In emergency situations, employees must inform their reporting manager as early as possible.</li>
+</ul>
+<h4>Unauthorized Absence</h4>
+<p style="font-size:13px;color:#374151;margin-bottom:10px">Absence without approval or proper intimation may be treated as unauthorized absence and may result in <strong>loss of pay or disciplinary action</strong>.</p>`,
 
   disciplinary:`<div class="doc-meta">Last Updated: Jan 2026 | Applicable: All Employees</div>
 <h4>Purpose</h4>
@@ -683,17 +751,12 @@ function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUppe
 // ==================== LEAVE BALANCE ====================
 function getLeaveBalance(empId){
   const {q,y}=currentQ();
-  const alloc={CL:4,SL:2};
+  const alloc=3;
   const leaves=getLeaves().filter(l=>l.empId===empId&&l.status==='Approved');
   const qStart=quarterStart(q,y);const qEnd=quarterEnd(q,y);
-  const usedCL=leaves.filter(l=>l.type==='CL'&&l.from>=qStart&&l.from<=qEnd).reduce((s,l)=>s+l.days,0);
-  const usedSL=leaves.filter(l=>l.type==='SL'&&l.from>=qStart&&l.from<=qEnd).reduce((s,l)=>s+l.days,0);
-  const pendCL=getLeaves().filter(l=>l.empId===empId&&l.type==='CL'&&l.status==='Pending'&&l.from>=qStart).reduce((s,l)=>s+l.days,0);
-  const pendSL=getLeaves().filter(l=>l.empId===empId&&l.type==='SL'&&l.status==='Pending'&&l.from>=qStart).reduce((s,l)=>s+l.days,0);
-  return{
-    CL:{alloc:alloc.CL,used:usedCL,pending:pendCL,avail:Math.max(0,alloc.CL-usedCL-pendCL)},
-    SL:{alloc:alloc.SL,used:usedSL,pending:pendSL,avail:Math.max(0,alloc.SL-usedSL-pendSL)},
-  };
+  const used=leaves.filter(l=>l.from>=qStart&&l.from<=qEnd).reduce((s,l)=>s+l.days,0);
+  const pending=getLeaves().filter(l=>l.empId===empId&&l.status==='Pending'&&l.from>=qStart).reduce((s,l)=>s+l.days,0);
+  return{alloc,used,pending,avail:Math.max(0,alloc-used-pending)};
 }
 
 // ==================== ATTENDANCE HELPERS ====================
@@ -896,7 +959,7 @@ function renderEmpDashboard(){
   const absentDays=absenceDays(emp.id,y,m);
   const lvDays=leaveDaysThisMonth(emp.id,y,m);
   const attPct=wdPassed>0?Math.round(presentDays/wdPassed*100):0;
-  const totalAvail=bal.CL.avail+bal.SL.avail;
+  const totalAvail=bal.avail;
   const pendingCount=getLeaves().filter(l=>l.empId===emp.id&&l.status==='Pending').length;
   const recentLeaves=getLeaves().filter(l=>l.empId===emp.id).sort((a,b)=>b.applied.localeCompare(a.applied)).slice(0,4);
   const upcomingLeaves=getLeaves().filter(l=>l.empId===emp.id&&l.status==='Approved'&&l.from>=today()).sort((a,b)=>a.from.localeCompare(b.from));
@@ -951,36 +1014,20 @@ function renderEmpDashboard(){
 </div>
 <div class="card">
   <div class="card-hdr"><h3>Leave Analysis</h3><span class="badge b-blue">${quarterLabel(q,y)}</span></div>
-  <div style="margin-bottom:12px">
-    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
-      <span style="font-weight:600">Casual Leave (CL)</span>
-      <span style="color:#6b7280">${bal.CL.used} used · <strong>${bal.CL.avail}</strong> left</span>
-    </div>
-    <div style="height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden">
-      <div style="height:100%;display:flex">
-        <div style="width:${Math.round(bal.CL.used/4*100)}%;background:#1d4ed8"></div>
-        <div style="width:${Math.round(bal.CL.pending/4*100)}%;background:#93c5fd"></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:4px;font-size:11px;color:#9ca3af">
-      <span style="color:#1d4ed8">■ Used: ${bal.CL.used}</span>${bal.CL.pending?`<span style="color:#93c5fd">■ Pending: ${bal.CL.pending}</span>`:''}
-      <span>□ Available: ${bal.CL.avail}</span>
-    </div>
-  </div>
   <div>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
-      <span style="font-weight:600">Sick Leave (SL)</span>
-      <span style="color:#6b7280">${bal.SL.used} used · <strong>${bal.SL.avail}</strong> left</span>
+      <span style="font-weight:600">Quarterly Leave (3 per quarter)</span>
+      <span style="color:#6b7280">${bal.used} used · <strong>${bal.avail}</strong> left</span>
     </div>
     <div style="height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden">
       <div style="height:100%;display:flex">
-        <div style="width:${Math.round(bal.SL.used/2*100)}%;background:#16a34a"></div>
-        <div style="width:${Math.round(bal.SL.pending/2*100)}%;background:#86efac"></div>
+        <div style="width:${Math.round(bal.used/3*100)}%;background:#1d4ed8"></div>
+        <div style="width:${Math.round(bal.pending/3*100)}%;background:#93c5fd"></div>
       </div>
     </div>
     <div style="display:flex;gap:10px;margin-top:4px;font-size:11px;color:#9ca3af">
-      <span style="color:#16a34a">■ Used: ${bal.SL.used}</span>${bal.SL.pending?`<span style="color:#86efac">■ Pending: ${bal.SL.pending}</span>`:''}
-      <span>□ Available: ${bal.SL.avail}</span>
+      <span style="color:#1d4ed8">■ Used: ${bal.used}</span>${bal.pending?`<span style="color:#93c5fd">■ Pending: ${bal.pending}</span>`:''}
+      <span>□ Available: ${bal.avail}</span>
     </div>
   </div>
   <button class="btn btn-outline btn-w" style="margin-top:14px" onclick="openLeaveModal()">+ Apply Leave</button>
@@ -1243,18 +1290,17 @@ function renderLeaveApply(){
 <div class="card" style="background:#eff6ff;border:1.5px solid #bfdbfe">
   <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:8px">Available Balance — ${quarterLabel(q,y)}</div>
   <div style="display:flex;gap:14px">
-    <div><span style="font-size:22px;font-weight:800;color:#1d4ed8">${bal.CL.avail}</span> <span style="font-size:12px;color:#374151">CL left</span></div>
-    <div><span style="font-size:22px;font-weight:800;color:#16a34a">${bal.SL.avail}</span> <span style="font-size:12px;color:#374151">SL left</span></div>
-    ${bal.CL.pending+bal.SL.pending>0?`<div><span style="font-size:22px;font-weight:800;color:#ca8a04">${bal.CL.pending+bal.SL.pending}</span> <span style="font-size:12px;color:#374151">Pending</span></div>`:''}
+    <div><span style="font-size:22px;font-weight:800;color:#1d4ed8">${bal.avail}</span> <span style="font-size:12px;color:#374151">Leaves left</span></div>
+    <div><span style="font-size:22px;font-weight:800;color:#6b7280">${bal.used}</span> <span style="font-size:12px;color:#374151">Used</span></div>
+    ${bal.pending>0?`<div><span style="font-size:22px;font-weight:800;color:#ca8a04">${bal.pending}</span> <span style="font-size:12px;color:#374151">Pending</span></div>`:''}
   </div>
 </div>
 <button class="btn btn-primary btn-w" onclick="openLeaveModal()">+ Apply for Leave</button>
 <div style="margin-top:14px;font-size:13px;color:#6b7280;line-height:1.6;background:#fff;border-radius:10px;padding:12px;box-shadow:var(--sh)">
   <strong style="color:#374151">Reminders:</strong><br>
-  • Apply at least 1 working day in advance<br>
-  • Max 3 consecutive days without prior approval<br>
-  • Unused leaves lapse at quarter end<br>
-  • SL may be applied same day with manager notification
+  • 3 leaves credited per quarter — unused leaves lapse at quarter end<br>
+  • Apply in advance; in emergencies inform your manager immediately<br>
+  • Unauthorized absence may result in loss of pay or disciplinary action
 </div>`;
 }
 
@@ -1291,27 +1337,29 @@ function renderLeaveBalance(){
   const emp=S.user.emp;
   const bal=getLeaveBalance(emp.id);
   const {q,y}=currentQ();
-  const clPct=Math.round((bal.CL.used/4)*100);
-  const slPct=Math.round((bal.SL.used/2)*100);
+  const usedPct=Math.round((bal.used/3)*100);
   document.getElementById('leaveBalanceContent').innerHTML=`
 <div class="card">
   <div class="card-hdr"><h3>Current Quarter</h3><span class="badge b-blue">${quarterLabel(q,y)}</span></div>
-  <div class="bal-grid">
+  <div class="bal-grid" style="grid-template-columns:1fr 1fr 1fr">
     <div class="bal-card">
-      <div class="bnum">${bal.CL.avail}</div>
-      <div class="btype">Casual Leave</div>
-      <div class="bsub">Available</div>
-      <div class="prog"><div class="prog-fill" style="width:${100-clPct}%;background:#1d4ed8"></div></div>
-      <div style="font-size:11px;color:#9ca3af;margin-top:5px">${bal.CL.used} used · ${bal.CL.pending} pending</div>
+      <div class="bnum">${bal.avail}</div>
+      <div class="btype">Available</div>
+      <div class="bsub">Leaves left</div>
     </div>
     <div class="bal-card">
-      <div class="bnum" style="color:#16a34a">${bal.SL.avail}</div>
-      <div class="btype">Sick Leave</div>
-      <div class="bsub">Available</div>
-      <div class="prog"><div class="prog-fill" style="width:${100-slPct}%;background:#16a34a"></div></div>
-      <div style="font-size:11px;color:#9ca3af;margin-top:5px">${bal.SL.used} used · ${bal.SL.pending} pending</div>
+      <div class="bnum" style="color:#dc2626">${bal.used}</div>
+      <div class="btype">Used</div>
+      <div class="bsub">This quarter</div>
+    </div>
+    <div class="bal-card">
+      <div class="bnum" style="color:#ca8a04">${bal.pending}</div>
+      <div class="btype">Pending</div>
+      <div class="bsub">Awaiting approval</div>
     </div>
   </div>
+  <div class="prog" style="margin-top:10px"><div class="prog-fill" style="width:${usedPct}%;background:#1d4ed8"></div></div>
+  <div style="font-size:11px;color:#9ca3af;margin-top:4px">${bal.used} of 3 leaves used this quarter</div>
 </div>
 <div class="card" style="background:#fef9c3;border:1.5px solid #fcd34d">
   <div style="font-size:13px;font-weight:700;color:#92400e;margin-bottom:4px">⚠️ Quarter Policy Reminder</div>
@@ -1326,7 +1374,7 @@ function renderLeaveBalance(){
       <span style="font-size:13px;color:#374151">${['Q1 Jan–Mar','Q2 Apr–Jun','Q3 Jul–Sep','Q4 Oct–Dec'][qi]} ${y}</span>
       <div style="display:flex;gap:8px;align-items:center">
         <span style="font-size:13px;font-weight:600;color:#1d4ed8">${qUsed} used</span>
-        ${qi===q?'<span class="badge b-blue">Current</span>':'<span style="font-size:11px;color:#9ca3af">Lapsed: '+(6-qUsed)+'</span>'}
+        ${qi===q?'<span class="badge b-blue">Current</span>':'<span style="font-size:11px;color:#9ca3af">Lapsed: '+(3-qUsed)+'</span>'}
       </div>
     </div>`;
   }).join('')}
@@ -1369,13 +1417,14 @@ function submitLeave(){
   if(!reason){showToast('Please enter a reason','e');return}
   const days=daysBetween(from,to);
   const bal=getLeaveBalance(emp.id);
-  const avail=type==='CL'?bal.CL.avail:bal.SL.avail;
-  if(days>avail){showToast(`Insufficient ${type} balance. Available: ${avail} day${avail!==1?'s':''}','e`);return}
+  if(days>bal.avail){showToast(`Insufficient leave balance. Available: ${bal.avail} day${bal.avail!==1?'s':''}','e`);return}
   const leave={
     id:'LV'+Date.now(),empId:emp.id,empName:emp.name,mgr:emp.mgr,dept:emp.dept,
     type,from,to,days,reason,status:'Pending',applied:today(),rejectReason:''
   };
   const leaves=getLeaves();leaves.push(leave);saveLeaves(leaves);
+  const mgrEmp=EMPLOYEES.find(e=>e.name===emp.mgr);
+  if(mgrEmp)addNotif(mgrEmp.id,`Leave Request: ${emp.name} applied for ${type} from ${fmtDate(from)} to ${fmtDate(to)} (${days} day${days>1?'s':''}). Awaiting your approval.`);
   closeModal('leaveModal');
   showToast(`Leave application submitted! Pending ${emp.mgr}'s approval.`,'s');
   renderPage(S.page);
@@ -1400,17 +1449,10 @@ function renderAttendance(){
       <div class="tc-val">${att&&att.in?att.in:'--:--'}</div>
       <div class="tc-lbl">Check In</div>
     </div>
-    <div class="time-chip">
-      <div class="tc-val">${att&&att.out?att.out:'--:--'}</div>
-      <div class="tc-lbl">Check Out</div>
-    </div>
   </div>
   <div class="att-btns" style="margin-top:12px">
     <button class="att-btn att-btn-in" onclick="checkIn()" ${att&&att.in?'disabled':''}>
       ${att&&att.in?'✅ Checked In':'Check In'}
-    </button>
-    <button class="att-btn att-btn-out" onclick="checkOut()" ${(!att||!att.in||att.out)?'disabled':''}>
-      ${att&&att.out?'✅ Checked Out':'Check Out'}
     </button>
   </div>
 </div>
@@ -1489,7 +1531,7 @@ function renderDocuments(){
   const customDocs=getDocs();
   document.getElementById('docsContent').innerHTML=`
 <p class="sec-title">Company Policies</p>
-${docCard('📋','Leave Policy','leave','bg:#dbeafe')}
+${docCard('📋','Leave Policy','leave','bg:#dbeafe',true)}
 ${docCard('⚖️','Disciplinary Policy','disciplinary','background:#fef3c7')}
 ${docCard('🤝','Code of Conduct','conduct','background:#dcfce7')}
 <p class="sec-title" style="margin-top:16px">Other Documents</p>
@@ -1504,7 +1546,10 @@ ${customDocs.length?customDocs.map((d,i)=>`
   <div class="doc-body">
     <div class="doc-meta">Uploaded by HR · ${fmtDate(d.date)}${d.size?' · '+d.size+' KB':''}</div>
     ${d.dataUrl
-      ?`<button class="btn btn-primary btn-sm" style="margin-bottom:8px" onclick="viewDoc(${i})">${isHR?'📄 Open / Download':'📄 View'}</button>`
+      ?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          <button class="btn btn-primary btn-sm" onclick="viewDoc(${i})">📄 View</button>
+          ${isHR?`<button class="btn btn-secondary btn-sm" onclick="downloadDoc(${i})">⬇ Download</button>`:''}
+        </div>`
       :`<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:10px;margin-bottom:8px">
           <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:3px">⚠️ File not viewable</div>
           <div style="font-size:12px;color:#78350f">${isHR?'This file was uploaded before the viewer was enabled. Please remove and re-upload it.':'This document was uploaded before the viewer was enabled. Please ask HR to re-upload it.'}</div>
@@ -1534,15 +1579,15 @@ ${isHR?`
 <button class="btn btn-primary btn-w" onclick="addTextDoc()">Add Document</button>`:''}`;
 }
 
-function docCard(icon,title,key,iconStyle){
+function docCard(icon,title,key,iconStyle,defaultOpen=false){
   return `
 <div class="doc-card">
   <div class="doc-hdr" onclick="toggleDocCard(this)">
     <div class="dicon" style="${iconStyle}">${icon}</div>
     <div class="doc-ttl">${title}</div>
-    <div class="doc-arr">›</div>
+    <div class="doc-arr${defaultOpen?' open':''}">›</div>
   </div>
-  <div class="doc-body">${POLICIES[key]}</div>
+  <div class="doc-body${defaultOpen?' open':''}">${POLICIES[key]}</div>
 </div>`;
 }
 
@@ -1657,7 +1702,7 @@ function rosterListHTML(filterByMgr){
 }
 
 function downloadAttendanceCSV(scope,mgrName){
-  const emps=scope==='all'?EMPLOYEES:EMPLOYEES.filter(e=>e.mgr===mgrName);
+  const emps=scope==='all'?EMPLOYEES.filter(e=>e.role!=='manager'):EMPLOYEES.filter(e=>e.mgr===mgrName);
   const att=getAtt();const leaves=getLeaves();
   const now=new Date();const y=now.getFullYear();const m=now.getMonth();
   const daysInMonth=new Date(y,m+1,0).getDate();
@@ -1703,24 +1748,45 @@ function reUploadDoc(i,input){
   reader.readAsDataURL(file);
 }
 
+let _viewerBlobUrl=null;
+let _viewerDocIdx=null;
 function viewDoc(i){
   const doc=getDocs()[i];
   if(!doc||!doc.dataUrl){showToast('File data not available','e');return;}
+  const arr=doc.dataUrl.split(',');
+  const mime=arr[0].match(/:(.*?);/)[1];
+  const bstr=atob(arr[1]);
+  let n=bstr.length;const u8=new Uint8Array(n);
+  while(n--)u8[n]=bstr.charCodeAt(n);
+  const blob=new Blob([u8],{type:mime});
+  if(_viewerBlobUrl)URL.revokeObjectURL(_viewerBlobUrl);
+  _viewerBlobUrl=URL.createObjectURL(blob);
+  _viewerDocIdx=i;
+  document.getElementById('docViewerTitle').textContent=doc.name;
+  document.getElementById('docViewerFrame').src=_viewerBlobUrl;
   const isHR=S.user&&S.user.role==='hr';
-  if(isHR){
-    const a=document.createElement('a');
-    a.href=doc.dataUrl;a.download=doc.name;
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-  } else {
-    const arr=doc.dataUrl.split(',');
-    const mime=arr[0].match(/:(.*?);/)[1];
-    const bstr=atob(arr[1]);
-    let n=bstr.length;const u8=new Uint8Array(n);
-    while(n--)u8[n]=bstr.charCodeAt(n);
-    const blob=new Blob([u8],{type:mime});
-    const url=URL.createObjectURL(blob);
-    window.open(url,'_blank');
-  }
+  document.getElementById('docViewerDownloadBtn').style.display=isHR?'':'none';
+  document.getElementById('docViewerModal').classList.add('show');
+}
+function closeDocViewer(){
+  document.getElementById('docViewerModal').classList.remove('show');
+  document.getElementById('docViewerFrame').src='about:blank';
+  if(_viewerBlobUrl){URL.revokeObjectURL(_viewerBlobUrl);_viewerBlobUrl=null;}
+}
+function downloadDocViewer(){
+  if(_viewerDocIdx===null)return;
+  const doc=getDocs()[_viewerDocIdx];
+  if(!doc||!doc.dataUrl)return;
+  const a=document.createElement('a');
+  a.href=doc.dataUrl;a.download=doc.name;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function downloadDoc(i){
+  const doc=getDocs()[i];
+  if(!doc||!doc.dataUrl){showToast('File data not available','e');return;}
+  const a=document.createElement('a');
+  a.href=doc.dataUrl;a.download=doc.name;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 
 function addTextDoc(){
@@ -2016,18 +2082,7 @@ ${isHR?`<div class="card" style="background:#eff6ff;border:1.5px solid #bfdbfe;t
 </div>`:''}
 <div class="access-card">
   <h3>Quick Access</h3>
-  ${isEmp?`
-  <button class="access-btn" onclick="showPage('manager')">
-    <span class="ab-icon">👔</span>
-    <div class="ab-text"><div class="ab-title">Manager Panel</div><div class="ab-sub">View team & pending approvals</div></div>
-    <span class="ab-arr">›</span>
-  </button>
-  <button class="access-btn" onclick="showPage('hr')">
-    <span class="ab-icon">🏢</span>
-    <div class="ab-text"><div class="ab-title">HR Admin Panel</div><div class="ab-sub">Employee directory & leave reports</div></div>
-    <span class="ab-arr">›</span>
-  </button>`:''}
-  <button class="access-btn" onclick="showPage('documents')">
+    <button class="access-btn" onclick="showPage('documents')">
     <span class="ab-icon">📋</span>
     <div class="ab-text"><div class="ab-title">Company Policies</div><div class="ab-sub">Leave, Disciplinary, Code of Conduct</div></div>
     <span class="ab-arr">›</span>
