@@ -801,30 +801,51 @@ function sendOTP(){
     document.getElementById('demoBanner').style.display='block';
     goToStep2();
   }
-  fetch('https://www.fast2sms.com/dev/bulkV2?authorization=iyepUwEgDHbMBk5TAcmFV0YoR3Q1vKZ4LCzqjtuOsfd6a7XJI2CwMQuk8UYvtqg5KeTlaJ2mp9cozSOZ&variables_values='+S.generatedOTP+'&route=otp&numbers='+mobile)
+  const API_KEY='iyepUwEgDHbMBk5TAcmFV0YoR3Q1vKZ4LCzqjtuOsfd6a7XJI2CwMQuk8UYvtqg5KeTlaJ2mp9cozSOZ';
+  const smsUrl='https://www.fast2sms.com/dev/bulkV2?authorization='+API_KEY+'&variables_values='+S.generatedOTP+'&route=otp&numbers='+mobile;
+  // Use CORS proxy to bypass browser cross-origin restriction
+  const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(smsUrl);
+  fetch(proxyUrl)
     .then(r=>r.json())
     .then(data=>{
       btn.disabled=false;btn.textContent='Send OTP';
       console.log('Fast2SMS response:',JSON.stringify(data));
       if(data.return===true){
-        document.getElementById('otpBannerTitle').textContent='OTP Sent';
-        document.getElementById('otpBannerTitle').textContent='OTP Sent';
-        document.getElementById('otpDisplay').textContent='OTP sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
+        document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
+        document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
         document.getElementById('demoBanner').style.display='block';
         goToStep2();
-        showToast('OTP sent to your mobile number','s');
+        showToast('OTP sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8),'s');
       } else {
         const errMsg=(data.message&&data.message[0])||'SMS delivery failed';
-        console.error('Fast2SMS error:',errMsg);
-        showOTPOnScreen();
-        showToast('SMS unavailable — OTP shown on screen','w');
+        const errCode=data.status_code;
+        console.error('Fast2SMS error:',errCode,errMsg);
+        if(errCode==996){
+          // Website not verified on Fast2SMS — show OTP on screen
+          showOTPOnScreen();
+          showToast('SMS route not verified. OTP shown on screen.','w');
+        } else {
+          showOTPOnScreen();
+          showToast('SMS unavailable — OTP shown on screen','w');
+        }
       }
     })
     .catch(err=>{
       btn.disabled=false;btn.textContent='Send OTP';
       console.error('Fast2SMS fetch error:',err);
-      showOTPOnScreen();
-      showToast('SMS unavailable — OTP shown on screen','w');
+      // Try direct call as last resort
+      fetch(smsUrl)
+        .then(r=>r.json())
+        .then(data=>{
+          if(data.return===true){
+            document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
+            document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
+            document.getElementById('demoBanner').style.display='block';
+            goToStep2();
+            showToast('OTP sent to your mobile','s');
+          } else { showOTPOnScreen();showToast('SMS unavailable — OTP shown on screen','w'); }
+        })
+        .catch(()=>{ showOTPOnScreen();showToast('SMS unavailable — OTP shown on screen','w'); });
     });
 }
 
