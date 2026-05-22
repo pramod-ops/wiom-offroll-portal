@@ -801,42 +801,8 @@ function sendOTP(){
     document.getElementById('demoBanner').style.display='block';
     goToStep2();
   }
-  const API_KEY='6928d328-55bf-11f1-9800-0200cd936042';
-  const smsUrl='https://2factor.in/API/V1/'+API_KEY+'/SMS/+91'+mobile+'/'+S.generatedOTP+'/OTP1';
-  const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(smsUrl);
-  fetch(proxyUrl)
-    .then(r=>r.json())
-    .then(data=>{
-      btn.disabled=false;btn.textContent='Send OTP';
-      console.log('2Factor response:',JSON.stringify(data));
-      if(data.Status==='Success'){
-        document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
-        document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
-        document.getElementById('demoBanner').style.display='block';
-        goToStep2();
-        showToast('OTP sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8),'s');
-      } else {
-        console.error('2Factor error:',data);
-        showOTPOnScreen();
-        showToast('SMS unavailable — OTP shown on screen','w');
-      }
-    })
-    .catch(err=>{
-      btn.disabled=false;btn.textContent='Send OTP';
-      console.error('2Factor fetch error:',err);
-      fetch(smsUrl)
-        .then(r=>r.json())
-        .then(data=>{
-          if(data.Status==='Success'){
-            document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
-            document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
-            document.getElementById('demoBanner').style.display='block';
-            goToStep2();
-            showToast('OTP sent to your mobile','s');
-          } else { showOTPOnScreen();showToast('SMS unavailable — OTP shown on screen','w'); }
-        })
-        .catch(()=>{ showOTPOnScreen();showToast('SMS unavailable — OTP shown on screen','w'); });
-    });
+  btn.disabled=false;btn.textContent='Send OTP';
+  showOTPOnScreen();
 }
 
 function verifyOTP(){
