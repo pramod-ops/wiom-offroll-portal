@@ -801,43 +801,33 @@ function sendOTP(){
     document.getElementById('demoBanner').style.display='block';
     goToStep2();
   }
-  const API_KEY='iyepUwEgDHbMBk5TAcmFV0YoR3Q1vKZ4LCzqjtuOsfd6a7XJI2CwMQuk8UYvtqg5KeTlaJ2mp9cozSOZ';
-  const smsUrl='https://www.fast2sms.com/dev/bulkV2?authorization='+API_KEY+'&variables_values='+S.generatedOTP+'&route=otp&numbers='+mobile;
-  // Use CORS proxy to bypass browser cross-origin restriction
+  const API_KEY='6928d328-55bf-11f1-9800-0200cd936042';
+  const smsUrl='https://2factor.in/API/V1/'+API_KEY+'/SMS/+91'+mobile+'/'+S.generatedOTP+'/OTP1';
   const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(smsUrl);
   fetch(proxyUrl)
     .then(r=>r.json())
     .then(data=>{
       btn.disabled=false;btn.textContent='Send OTP';
-      console.log('Fast2SMS response:',JSON.stringify(data));
-      if(data.return===true){
+      console.log('2Factor response:',JSON.stringify(data));
+      if(data.Status==='Success'){
         document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
         document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
         document.getElementById('demoBanner').style.display='block';
         goToStep2();
         showToast('OTP sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8),'s');
       } else {
-        const errMsg=(data.message&&data.message[0])||'SMS delivery failed';
-        const errCode=data.status_code;
-        console.error('Fast2SMS error:',errCode,errMsg);
-        if(errCode==996){
-          // Website not verified on Fast2SMS — show OTP on screen
-          showOTPOnScreen();
-          showToast('SMS route not verified. OTP shown on screen.','w');
-        } else {
-          showOTPOnScreen();
-          showToast('SMS unavailable — OTP shown on screen','w');
-        }
+        console.error('2Factor error:',data);
+        showOTPOnScreen();
+        showToast('SMS unavailable — OTP shown on screen','w');
       }
     })
     .catch(err=>{
       btn.disabled=false;btn.textContent='Send OTP';
-      console.error('Fast2SMS fetch error:',err);
-      // Try direct call as last resort
+      console.error('2Factor fetch error:',err);
       fetch(smsUrl)
         .then(r=>r.json())
         .then(data=>{
-          if(data.return===true){
+          if(data.Status==='Success'){
             document.getElementById('otpBannerTitle').textContent='OTP Sent ✓';
             document.getElementById('otpDisplay').textContent='Sent to +91 '+mobile.substring(0,2)+'XXXXXX'+mobile.substring(8);
             document.getElementById('demoBanner').style.display='block';
