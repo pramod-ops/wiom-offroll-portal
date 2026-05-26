@@ -692,19 +692,34 @@ let S = {
 };
 
 // ==================== STORAGE ====================
-function getLeaves(){return JSON.parse(localStorage.getItem('wiom_leaves')||'[]')}
-function saveLeaves(d){localStorage.setItem('wiom_leaves',JSON.stringify(d))}
-function getAtt(){return JSON.parse(localStorage.getItem('wiom_att')||'{}')}
-function saveAtt(d){localStorage.setItem('wiom_att',JSON.stringify(d))}
-function getDocs(){return JSON.parse(localStorage.getItem('wiom_docs')||'[]')}
-function saveDocs(d){localStorage.setItem('wiom_docs',JSON.stringify(d))}
-function getCustomEmps(){return JSON.parse(localStorage.getItem('wiom_custom_emps')||'[]')}
-function saveCustomEmps(d){localStorage.setItem('wiom_custom_emps',JSON.stringify(d))}
-function getResignations(){return JSON.parse(localStorage.getItem('wiom_resignations')||'[]')}
-function saveResignations(d){localStorage.setItem('wiom_resignations',JSON.stringify(d))}
-function getNotifs(empId){const n=JSON.parse(localStorage.getItem('wiom_notifs')||'{}');return n[empId]||[];}
-function addNotif(empId,msg){if(!empId)return;const n=JSON.parse(localStorage.getItem('wiom_notifs')||'{}');if(!n[empId])n[empId]=[];n[empId].unshift({msg,date:today(),read:false});localStorage.setItem('wiom_notifs',JSON.stringify(n));}
-function markNotifsRead(empId){if(!empId)return;const n=JSON.parse(localStorage.getItem('wiom_notifs')||'{}');if(n[empId])n[empId].forEach(x=>x.read=true);localStorage.setItem('wiom_notifs',JSON.stringify(n));}
+const BACKEND='http://localhost:8306/api';
+const _cache={wiom_att:{},wiom_leaves:[],wiom_notifs:{},wiom_custom_emps:[],wiom_resignations:[],wiom_rosters:[]};
+let _cacheLoaded=false;
+async function loadCache(){
+  if(_cacheLoaded)return;
+  try{
+    const r=await fetch(BACKEND+'?action=getAll');
+    const d=await r.json();
+    if(d.ok){for(const k of Object.keys(_cache)){if(d.data[k])_cache[k]=JSON.parse(d.data[k]);}}
+  }catch(e){console.warn('Backend unavailable, using local cache');}
+  _cacheLoaded=true;
+}
+function _save(key){fetch(BACKEND,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key,value:JSON.stringify(_cache[key])})}).catch(()=>{});}
+function getLeaves(){return _cache.wiom_leaves;}
+function saveLeaves(d){_cache.wiom_leaves=d;_save('wiom_leaves');}
+function getAtt(){return _cache.wiom_att;}
+function saveAtt(d){_cache.wiom_att=d;_save('wiom_att');}
+function getDocs(){return JSON.parse(localStorage.getItem('wiom_docs')||'[]');}
+function saveDocs(d){localStorage.setItem('wiom_docs',JSON.stringify(d));}
+function getCustomEmps(){return _cache.wiom_custom_emps;}
+function saveCustomEmps(d){_cache.wiom_custom_emps=d;_save('wiom_custom_emps');}
+function getResignations(){return _cache.wiom_resignations;}
+function saveResignations(d){_cache.wiom_resignations=d;_save('wiom_resignations');}
+function getRosters(){return _cache.wiom_rosters;}
+function saveRosters(d){_cache.wiom_rosters=d;_save('wiom_rosters');}
+function getNotifs(empId){return(_cache.wiom_notifs[empId])||[];}
+function addNotif(empId,msg){if(!empId)return;if(!_cache.wiom_notifs[empId])_cache.wiom_notifs[empId]=[];_cache.wiom_notifs[empId].unshift({msg,date:today(),read:false});_save('wiom_notifs');}
+function markNotifsRead(empId){if(!empId)return;if(_cache.wiom_notifs[empId])_cache.wiom_notifs[empId].forEach(x=>x.read=true);_save('wiom_notifs');}
 function unreadNotifCount(empId){return getNotifs(empId).filter(n=>!n.read).length;}
 
 // ==================== DATE / QUARTER HELPERS ====================
@@ -792,7 +807,8 @@ function verifyOTP(){
   else loginSuccess({emp,role:'employee'});
 }
 
-function loginSuccess(user){
+async function loginSuccess(user){
+  await loadCache();
   S.user=user;
   document.getElementById('loginPage').style.display='none';
   const app=document.getElementById('app');
